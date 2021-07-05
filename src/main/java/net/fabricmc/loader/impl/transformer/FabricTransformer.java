@@ -16,6 +16,7 @@
 
 package net.fabricmc.loader.impl.transformer;
 
+import cx.rain.mc.silk.MinecraftBukkitGameProvider;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -23,7 +24,6 @@ import org.objectweb.asm.ClassWriter;
 import net.fabricmc.accesswidener.AccessWidenerVisitor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
-import net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 
 public final class FabricTransformer {
@@ -31,7 +31,7 @@ public final class FabricTransformer {
 		boolean isDevelopment = FabricLauncherBase.getLauncher().isDevelopment();
 		EnvType envType = FabricLauncherBase.getLauncher().getEnvironmentType();
 
-		byte[] input = MinecraftGameProvider.TRANSFORMER.transform(name);
+		byte[] input = MinecraftBukkitGameProvider.TRANSFORMER.transform(name);
 
 		if (input != null) {
 			return FabricTransformer.transform(isDevelopment, envType, name, input);

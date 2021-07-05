@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+import cx.rain.mc.silk.MinecraftBukkitGameProvider;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.Proxy;
@@ -47,7 +48,6 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.entrypoint.EntrypointUtils;
 import net.fabricmc.loader.impl.game.GameProvider;
-import net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 import net.fabricmc.loader.impl.launch.FabricMixinBootstrap;
 import net.fabricmc.loader.impl.util.Arguments;
@@ -112,7 +112,7 @@ public abstract class FabricTweaker extends FabricLauncherBase implements ITweak
 		// FIXME: remove the GSON exclusion once loader stops using it (or repackages it)
 		launchClassLoader.addClassLoaderExclusion("com.google.gson.");
 
-		GameProvider provider = new MinecraftGameProvider();
+		GameProvider provider = new MinecraftBukkitGameProvider();
 
 		if (!provider.locateGame(getEnvironmentType(), arguments.toArray(), launchClassLoader)) {
 			throw new RuntimeException("Could not locate Minecraft: provider locate failed");
@@ -152,7 +152,7 @@ public abstract class FabricTweaker extends FabricLauncherBase implements ITweak
 
 		FabricLoaderImpl.INSTANCE.loadAccessWideners();
 
-		MinecraftGameProvider.TRANSFORMER.locateEntrypoints(this);
+		MinecraftBukkitGameProvider.TRANSFORMER.locateEntrypoints(this);
 
 		// Setup Mixin environment
 		MixinBootstrap.init();

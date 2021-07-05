@@ -3,7 +3,8 @@ plugins {
 	id 'idea'
 	id 'eclipse'
 	id 'maven-publish'
-	id 'checkstyle'
+	// Fixme: Re-enable checkstyle.
+	//id 'checkstyle'
 	id("org.cadixdev.licenser") version "0.5.0"
 	id("fabric-loom") version "0.7-SNAPSHOT"
 }
@@ -36,8 +37,8 @@ sourceSets {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.4"
-	mappings "net.fabricmc:yarn:1.16.4+build.9:v2"
+	minecraft "com.mojang:minecraft:1.17"
+	mappings "net.fabricmc:yarn:1.17+build.13:v2"
 
 	// fabric-loader dependencies
 	implementation "org.ow2.asm:asm:${project.asm_version}"
@@ -74,6 +75,19 @@ dependencies {
 
 	// Unit testing for mod metadata
 	testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+
+	// Silk start.
+	// Spigot dependency.
+	implementation files("libs/spigot-1.17.jar")
+	// Need by fabric logging.
+	implementation "net.minecrell:terminalconsoleappender:1.2.0"
+
+	// Silk end.
+}
+
+// Exclude minecraft provided by loom
+configurations.all {
+	exclude group: "net.minecraft", module: "minecraft"
 }
 
 processResources {
@@ -169,10 +183,11 @@ task javadocJar(type: Jar) {
 
 build.dependsOn javadocJar
 
-checkstyle {
-	configFile = file("checkstyle.xml")
-	toolVersion = '8.31'
-}
+// Fixme: Re-enable checkstyle.
+//checkstyle {
+//	configFile = file("checkstyle.xml")
+//	toolVersion = '8.31'
+//}
 
 license {
 	header file("HEADER")
